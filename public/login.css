@@ -1,0 +1,48 @@
+/* Estilos generales */
+h1 {
+  text-align: center;
+}
+
+form {
+  width: 300px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="email"],
+input[type="password"],
+button {
+  margin-bottom: 10px;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  background-color: #f8f8f8;
+  color: #333;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e8e8e8;
+}
+
+/* Estilos específicos para los botones de Cancelar y Registrarse */
+#cancel-btn,
+#register-btn {
+  float: right;
+  margin-left: 10px;
+}
+
+.register-button {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+.register-button:hover {
+  background-color: #e8e8e8;
+}

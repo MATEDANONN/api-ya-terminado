@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Inicio de Usuario</title>
+  <link rel="stylesheet" href="registrate.css">
+</head>
+
+<body>
+  <h1>Inicio de Usuario</h1>
+  <form id="registration-form" action="/login" method="get">
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit" id="login-btn" class="login-button">Iniciar sesión</button>
+    <button id="cancel-btn" class="cancel-button">Cancelar</button>
+    <button id="register-btn" class="register-button">Registrarse</button>
+  </form>
+
+  <script>
+    // Add an event listener to the form submission
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+  
+      // Get the form data
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+  
+      // Create the request body as an object
+      const requestBody = {
+        email: email,
+        password: password
+      };
+  
+      // Send a POST request to the server
+      fetch('/checkLogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        if (response.ok) {
+          // Authentication successful, redirect to the home page or authenticated page
+          window.location.href = "./iniciado.html";
+        } else {
+          // Authentication failed, handle the error
+          console.error('Authentication failed:', response.status);
+          alert("Usuario y/o Contraseña incorrectos");
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+// Obtener referencia al botón de inicio de sesión
+const cancelButton = document.getElementById('cancel-btn');
+
+// Agregar un event listener para el clic en el botón
+cancelButton.addEventListener('click', () => {
+  // Redireccionar a otro archivo HTML
+  window.location.href = 'home.html';
+});
+
+// Obtener referencia al botón de inicio de sesión
+const registerButton = document.getElementById('register-btn');
+
+// Agregar un event listener para el clic en el botón
+registerButton.addEventListener('click', () => {
+  // Redireccionar a otro archivo HTML
+  window.location.href = 'registrate.html';
+});
+
+  </script>
+</body>
+
+</html>
