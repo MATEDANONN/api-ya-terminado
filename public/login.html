@@ -60,7 +60,8 @@
 const cancelButton = document.getElementById('cancel-btn');
 
 // Agregar un event listener para el clic en el botón
-cancelButton.addEventListener('click', () => {
+cancelButton.addEventListener('click', (event) => {
+  event.preventDefault();
   // Redireccionar a otro archivo HTML
   window.location.href = 'home.html';
 });
@@ -69,7 +70,8 @@ cancelButton.addEventListener('click', () => {
 const registerButton = document.getElementById('register-btn');
 
 // Agregar un event listener para el clic en el botón
-registerButton.addEventListener('click', () => {
+registerButton.addEventListener('click', (event) => {
+  event.preventDefault();
   // Redireccionar a otro archivo HTML
   window.location.href = 'registrate.html';
 });

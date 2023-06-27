@@ -11,7 +11,11 @@
 <body>
   <header>
     <h1>Movesonn</h1>
-    <button id="login-btn" class="loginButton">Iniciar Sesión</button>
+    <div class="button-div">
+      <form id="login-form">
+        <button id="login-btn" class="loginButton"><b>Iniciar Sesión</b></button>
+      </form>
+    </div>
   </header>
 
   <form id="search">
@@ -40,6 +44,9 @@
   </div>
 
   <script>
+    document.getElementById("login-form").addEventListener("click", (event) => {
+      event.preventDefault();
+    });
     // Obtener referencia al botón de inicio de sesión
     const loginButton = document.getElementById('login-btn');
 
@@ -48,10 +55,9 @@
       // Redireccionar a otro archivo HTML
       window.location.href = 'login.html';
     });
-    
+
   </script>
 
 </body>
 
 </html>
-
