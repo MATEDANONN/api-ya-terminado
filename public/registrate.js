@@ -6,7 +6,7 @@ registrationForm.addEventListener('submit', (event) => {
   event.preventDefault(); // Prevenir el envío del formulario
 
   // Abrir una nueva pestaña con la página de registro
-  window.open('iniciado.html', '_blank');
+  // window.open('/', '_blank');
 });
 
 class Registrate {
@@ -42,6 +42,7 @@ class Registrate {
         })
         .then(result => {
             //Promesa hacer algo una vez obtenido el resuldao del servidor
+            window.location.href = "./";
             
         });
                 

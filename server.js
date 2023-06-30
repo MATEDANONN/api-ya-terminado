@@ -8,20 +8,39 @@ import searchMovies from "./axios.js";
 
 const __dirname = fs.realpathSync('.');
 
+var isAuth = false;
+
+function isAuthenticated() {
+  if (isAuth) {
+    return true;
+  }
+  else return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 class DictionaryBackendServer {
   constructor() {
     const app = express();
     app.use(express.json());
-    app.use(express.static('public'));
+    app.use((req, res, next) => {
+      const filePath = path.join(__dirname, 'public', req.url);
+      const extname = path.extname(filePath).toLowerCase();
+      const allowedExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif']; // Add more extensions if needed
+
+      if (allowedExtensions.includes(extname)) {
+        res.sendFile(filePath);
+      } else {
+        next();
+      }
+    });
     app.use(express.urlencoded({ extended: false }));
     const authorization = new Authorization(app);
 
     app.get('/lookup/:word', this._doLookup);
     app.post('/save/', this._doSave);
     app.get('/login/', this._login);
-    app.get('/', authorization.checkAuthenticated, this._goHome);
-    app.post('/registro/', this._doSignup)
+    app.get('/', this._goHome);
+    app.post('/registro/', this._doSignup.bind(this));
 
     // aca empieza el cambio
     app.get('/auth/google/', passport.authenticate('google', {
@@ -42,6 +61,10 @@ class DictionaryBackendServer {
 
     app.post('/checkLogin/', this.loginSubroutine.bind(this));
 
+    app.get('/notLogged', this.notLogged);
+
+    app.get('/register', this.register);
+
     // Start server
     app.listen(3000, () => console.log('Listening on port 3000'));
   }
@@ -51,7 +74,9 @@ class DictionaryBackendServer {
   }
 
   async _goHome(req, res) {
-    res.sendFile(path.join(__dirname, "public/home.html"));
+    if (isAuthenticated()) {
+      res.sendFile(path.join(__dirname, "public/iniciado.html"));
+    } else res.redirect("/login");
   }
 
   async _doLookup(req, res) {
@@ -81,6 +106,7 @@ class DictionaryBackendServer {
     console.log(req.body);
     const collection = db.collection('usuarios');
     await collection.insertOne(req.body);
+    isAuth = true;
     res.json({ success: true });
   }
 
@@ -107,13 +133,22 @@ class DictionaryBackendServer {
 
     if (user) {
       console.log("User found");
+      isAuth = true;
       // Authentication successful
-      res.status(200).sendFile(path.join(__dirname, "public/iniciado.html")); // Redirect to the home page or authenticated page
+      res.status(200).redirect("/"); // Redirect to the home page or authenticated page
     } else {
       // Authentication failed
       console.log("User not found");
       res.status(401).send('Incorrect credentials');
     }
+  }
+
+  async notLogged(req, res) {
+    res.sendFile(path.join(__dirname, "public/home.html"));
+  }
+
+  async register(req, res) {
+    res.sendFile(path.join(__dirname, "public/registrate.html"));
   }
 }
 
